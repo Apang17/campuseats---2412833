@@ -1,5 +1,11 @@
+import Header from './components/Header.jsx'
+
 function App() {
-  return <h1>CampusEats</h1>
+  return (
+    <>
+      <Header />
+    </>
+  )
 }
 
 export default App
