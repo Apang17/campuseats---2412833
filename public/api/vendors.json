@@ -1,0 +1,70 @@
+[
+  {
+    "id": "2412833-mcdonalds",
+    "name": "McDonald's",
+    "location": "Mahallah ..., Block ...",
+    "openHours": "7:00 am - 11:00 pm",
+    "isOpen": true,
+    "menu": [
+      { "id": "2412833-m1", "name": "Big Mac", "description": "Two beef patties, special sauce, lettuce, cheese, pickles and onions on a sesame bun", "price": 13.50, "category": "Burgers", "available": true, "popular": true },
+      { "id": "2412833-m2", "name": "McSpicy", "description": "Crispy spicy chicken thigh with lettuce and mayo", "price": 13.50, "category": "Burgers", "available": true, "popular": true },
+      { "id": "2412833-m3", "name": "Filet-O-Fish", "description": "Fish fillet with tartar sauce and cheese", "price": 11.50, "category": "Burgers", "available": true, "popular": false },
+      { "id": "2412833-m4", "name": "Ayam Goreng McD (2 pcs)", "description": "Two pieces of crispy fried chicken", "price": 11.50, "category": "Chicken", "available": true, "popular": true },
+      { "id": "2412833-m5", "name": "Chicken McNuggets (6 pcs)", "description": "Six golden chicken nuggets with dipping sauce", "price": 10.50, "category": "Chicken", "available": true, "popular": false },
+      { "id": "2412833-m6", "name": "Large Fries", "description": "Golden crispy fries, lightly salted", "price": 7.50, "category": "Sides", "available": true, "popular": true },
+      { "id": "2412833-m7", "name": "Oreo McFlurry", "description": "Soft serve ice cream with Oreo cookie pieces", "price": 8.50, "category": "Desserts", "available": true, "popular": false },
+      { "id": "2412833-m8", "name": "Iced Milo", "description": "Cold chocolate malt drink", "price": 5.50, "category": "Drinks", "available": true, "popular": false },
+      { "id": "2412833-m9", "name": "Coca-Cola", "description": "Chilled carbonated drink", "price": 4.50, "category": "Drinks", "available": false, "popular": false }
+    ]
+  },
+  {
+    "id": "2417045-hot-bird",
+    "name": "Hot Bird",
+    "location": "The Exchange TRX",
+    "openHours": "10:00 am - 10:00 pm",
+    "isOpen": true,
+    "menu": [
+      { "id": "2417045-m1", "name": "Jumbo Tenders Set", "description": "Large chicken tenders served with selected side meal, fries, and sauce", "price": 35.90, "category": "Tenders", "available": true },
+      { "id": "2417045-m2", "name": "Hot Bird Fried Chicken", "description": "Three pieces of crispy fried chicken with a special sauce", "price": 33.90, "category": "Chickens", "available": true },
+      { "id": "2417045-m3", "name": "Hot Bird Burger Meal", "description": "A delicious burger with a special sauce, served with fries", "price": 23.90, "category": "Burgers", "available": true },
+      { "id": "2417045-m4", "name": "Large Cajun Fries", "description": "Large portion of Cajun-style fries with special peppers", "price": 10, "category": "Sides", "available": true },
+      { "id": "2417045-m5", "name": "Mac & Cheese", "description": "Small portion of creamy macaroni and cheese", "price": 12.90, "category": "Sides", "available": true },
+      { "id": "2417045-m6", "name": "Double Chocolate Milkshake", "description": "A rich and creamy milkshake with double chocolate flavor", "price": 15, "category": "Drinks", "available": true },
+      { "id": "2417045-m7", "name": "Creamy Strawberry Milkshake", "description": "A rich and creamy milkshake with strawberry flavor", "price": 15, "category": "Drinks", "available": false }
+    ]
+  },
+  {
+    "id": "2416229-woodfire",
+    "name": "Woodfire",
+    "location": "Student Mall, Level 1",
+    "openHours": "9:00 am - 10:00 pm",
+    "isOpen": true,
+    "menu": [
+      { "id": "2416229-m1-brisket-burger", "name": "Brisket Burger", "description": "Smoked beef brisket, beef patty, cheese, pickles, and Woodfire sauce.", "price": 38.90, "category": "Burgers", "available": true },
+      { "id": "2416229-m2-smoked-beef", "name": "Smoked Beef Burger", "description": "Juicy beef patty, smoked beef bacon, cheese, tomato, lettuce, and signature sauce.", "price": 21.90, "category": "Burgers", "available": true },
+      { "id": "2416229-m3-stuffed-cheese", "name": "Stuffed Cheese Burger", "description": "Beef patty stuffed with mozzarella cheese, topped with caramelized onions and sauce.", "price": 24.90, "category": "Burgers", "available": true },
+      { "id": "2416229-m4-bbq-chicken", "name": "BBQ Chicken Burger", "description": "Crispy fried chicken thigh, BBQ sauce, cheese, and coleslaw.", "price": 19.90, "category": "Burgers", "available": true },
+      { "id": "2416229-m5-curly-fries", "name": "Curly Fries", "description": "Crispy seasoned curly fries.", "price": 8.90, "category": "Sides", "available": true },
+      { "id": "2416229-m6-coney-fries", "name": "Beef Coney Fries", "description": "Fries loaded with minced beef coney sauce and cheese.", "price": 14.90, "category": "Sides", "available": true },
+      { "id": "2416229-m7-coke", "name": "Coca-Cola", "description": "Iced carbonated drink.", "price": 3.50, "category": "Drinks", "available": true },
+      { "id": "2416229-m8-sprite", "name": "Sprite", "description": "Iced lemon-lime carbonated drink.", "price": 3.50, "category": "Drinks", "available": true }
+    ]
+  },
+  {
+    "id": "2418497-gepuk-t20",
+    "name": "Nasi Ayam Gepuk T20",
+    "location": "Mahallah Ali, Block C",
+    "openHours": "11:00 am - 10:00 pm",
+    "isOpen": true,
+    "menu": [
+      { "id": "2418497-m1-set-biasa", "name": "Set Biasa", "description": "Nasi, ayam gepuk, sambal gesek, kubis goreng, timun.", "price": 9.00, "category": "Sets", "available": true },
+      { "id": "2418497-m2-set-extra-pedas", "name": "Set Extra Pedas", "description": "Nasi, ayam gepuk dengan extra sambal level neraka, kubis goreng.", "price": 9.50, "category": "Sets", "available": true },
+      { "id": "2418497-m3-set-double-ayam", "name": "Set Double Ayam", "description": "Nasi dengan dua ketul ayam gepuk, sambal, kubis goreng.", "price": 14.00, "category": "Sets", "available": true },
+      { "id": "2418497-m4-set-t20", "name": "Set T20 Premium", "description": "Nasi, ayam gepuk saiz besar, telur dadar, tempe, tauhu, kubis goreng, sup.", "price": 18.00, "category": "Sets", "available": true },
+      { "id": "2418497-m5-add-nasi", "name": "Tambah Nasi", "description": "Nasi putih extra.", "price": 2.00, "category": "Add-ons", "available": true },
+      { "id": "2418497-m6-add-kubis", "name": "Tambah Kubis Goreng", "description": "Satu portion kubis goreng rangup.", "price": 2.50, "category": "Add-ons", "available": true },
+      { "id": "2418497-m7-drink-teh", "name": "Teh O Ais", "description": "Teh O Ais pekat dan manis.", "price": 2.50, "category": "Drinks", "available": true },
+      { "id": "2418497-m8-drink-bandung", "name": "Sirap Bandung Ais", "description": "Sirap ros dengan susu.", "price": 3.00, "category": "Drinks", "available": true }
+    ]
+  }
+]
