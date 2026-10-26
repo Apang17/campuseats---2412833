@@ -15,6 +15,8 @@ function App() {
   const [cart, setCart] = useState([]) // lines of { item, qty }
   const [view, setView] = useState('menu') // 'menu' | 'cart' | 'done'
   const [lastOrder, setLastOrder] = useState(null)
+  const [favourites, setFavourites] = useState([])
+  const [showFavouritesOnly, setShowFavouritesOnly] = useState(false)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -52,6 +54,15 @@ function App() {
     })
   }
 
+  function handleToggleFavourite(itemId) {
+    setFavourites((prev) => {
+    if (prev.includes(itemId)) {
+      return prev.filter((id) => id !== itemId)
+    }
+      return [...prev, itemId]
+    })
+  }
+
   function handleChangeQty(itemId, delta) {
     setCart((prev) =>
       prev
@@ -66,15 +77,25 @@ function App() {
     setCart((prev) => prev.filter((line) => line.item.id !== itemId))
   }
 
-  function handlePlaceOrder(details) {
-    const total = 0 // TODO (B5): same reduce as CartPage
-    setLastOrder({ ...details, total })
-    setCart([])
-    setView('done')
-  }
+function handlePlaceOrder(details) {
+  const total = cart.reduce(
+    (sum, line) => sum + line.item.price * line.qty,
+    0
+  )
+
+  setLastOrder({ ...details, total })
+  setCart([])
+  setView('done')
+}
 
   const cartCount = cart.reduce((sum, line) => sum + line.qty, 0)
   const selectedVendor = vendors.find((v) => v.id === selectedVendorId)
+  // B6: Display all items or favourite items only
+  const visibleMenuItems = selectedVendor
+  ? selectedVendor.menu.filter((item) =>
+      !showFavouritesOnly || favourites.includes(item.id)
+    )
+  : []
 
   let content
   if (view === 'cart') {
@@ -87,7 +108,19 @@ function App() {
       />
     )
   } else if (view === 'done') {
-    content = <p>Order placed.</p> // TODO (B5): show pickup time and total
+  content = (
+    <div className="card">
+      <h2>Order placed successfully!</h2>
+
+      <p>Name: {lastOrder.name}</p>
+
+      <p>Mahallah: {lastOrder.mahallah}</p>
+
+      <p>Pickup Time: {lastOrder.pickupTime}</p>
+
+      <p>Total: RM {lastOrder.total.toFixed(2)}</p>
+    </div>
+  )
   } else if (loading) {
     content = <Loading />
   } else if (error) {
@@ -111,7 +144,23 @@ function App() {
         {selectedVendor && (
           <section>
             <h2 className="section-title">Menu: {selectedVendor.name}</h2>
-            <MenuList items={selectedVendor.menu} onAdd={handleAddToCart} />
+
+            {/* B6: Favourites Only toggle */}
+            <label>
+              <input
+                type="checkbox"
+                checked={showFavouritesOnly}
+                onChange={(e) => setShowFavouritesOnly(e.target.checked)}
+              />
+              Favourites Only
+            </label>
+
+            <MenuList
+              items={visibleMenuItems}
+              onAdd={handleAddToCart}
+              favourites={favourites}
+              onToggleFavourite={handleToggleFavourite}
+            />
           </section>
         )}
       </>

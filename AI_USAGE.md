@@ -11,3 +11,7 @@
 - What I asked for: Step-by-step help creating data/vendors.js, passing props to MenuItemCard, MenuList and VendorCard, adding vendor selection with useState, and the Add to cart badge.
 - What I kept, changed or rejected, and why: I followed the lecturer's code for each component and used my own restaurant's data in vendors.js.
 - One thing the AI got wrong and how I fixed it: [write your own, see below]
+
+## Week 4
+### 4. One Thing AI Got Wrong
+- Initially, the Favourite feature caused an error because the favourites array was not passed correctly to MenuList. I checked the browser console and corrected the props in App.jsx.
