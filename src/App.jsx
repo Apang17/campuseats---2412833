@@ -3,6 +3,7 @@ import Header from './components/Header.jsx'
 import VendorCard from './components/VendorCard.jsx'
 import MenuList from './components/MenuList.jsx'
 import Footer from './components/Footer.jsx'
+import CartPage from './components/CartPage.jsx'
 import { Loading, ErrorMessage } from './components/Status.jsx'
 
 function App() {
@@ -11,7 +12,9 @@ function App() {
   const [error, setError] = useState(null)
   const [reloadKey, setReloadKey] = useState(0)
   const [selectedVendorId, setSelectedVendorId] = useState(null)
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState([]) // lines of { item, qty }
+  const [view, setView] = useState('menu') // 'menu' | 'cart' | 'done'
+  const [lastOrder, setLastOrder] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -25,7 +28,7 @@ function App() {
       })
       .then((data) => {
         setVendors(data)
-        setSelectedVendorId(data[0].id) // select the first vendor once data arrives
+        setSelectedVendorId(data[0].id)
       })
       .catch((err) => {
         if (err.name !== 'AbortError') setError(err.message)
@@ -38,13 +41,54 @@ function App() {
   }, [reloadKey])
 
   function handleAddToCart(item) {
-    setCart((prevCart) => [...prevCart, item])
+    setCart((prev) => {
+      const exists = prev.some((line) => line.item.id === item.id)
+      if (exists) {
+        return prev.map((line) =>
+          line.item.id === item.id ? { ...line, qty: line.qty + 1 } : line
+        )
+      }
+      return [...prev, { item, qty: 1 }]
+    })
   }
 
+  function handleChangeQty(itemId, delta) {
+    setCart((prev) =>
+      prev
+        .map((line) =>
+          line.item.id === itemId ? { ...line, qty: line.qty + delta } : line
+        )
+        .filter((line) => line.qty > 0)
+    )
+  }
+
+  function handleRemove(itemId) {
+    setCart((prev) => prev.filter((line) => line.item.id !== itemId))
+  }
+
+  function handlePlaceOrder(details) {
+    const total = 0 // TODO (B5): same reduce as CartPage
+    setLastOrder({ ...details, total })
+    setCart([])
+    setView('done')
+  }
+
+  const cartCount = cart.reduce((sum, line) => sum + line.qty, 0)
   const selectedVendor = vendors.find((v) => v.id === selectedVendorId)
 
   let content
-  if (loading) {
+  if (view === 'cart') {
+    content = (
+      <CartPage
+        cart={cart}
+        onChangeQty={handleChangeQty}
+        onRemove={handleRemove}
+        onPlaceOrder={handlePlaceOrder}
+      />
+    )
+  } else if (view === 'done') {
+    content = <p>Order placed.</p> // TODO (B5): show pickup time and total
+  } else if (loading) {
     content = <Loading />
   } else if (error) {
     content = <ErrorMessage message={error} onRetry={() => setReloadKey((k) => k + 1)} />
@@ -76,7 +120,11 @@ function App() {
 
   return (
     <>
-      <Header cartCount={cart.length} />
+      <Header
+        cartCount={cartCount}
+        onShowMenu={() => setView('menu')}
+        onShowCart={() => setView('cart')}
+      />
       <main className="container">{content}</main>
       <Footer />
     </>
