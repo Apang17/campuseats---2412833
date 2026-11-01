@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useVendors } from './hooks/useVendors.js'
 import Header from './components/Header.jsx'
 import VendorCard from './components/VendorCard.jsx'
 import MenuList from './components/MenuList.jsx'
@@ -7,40 +8,11 @@ import CartPage from './components/CartPage.jsx'
 import { Loading, ErrorMessage } from './components/Status.jsx'
 
 function App() {
-  const [vendors, setVendors] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [reloadKey, setReloadKey] = useState(0)
+  const { vendors, loading, error, reload } = useVendors()
   const [selectedVendorId, setSelectedVendorId] = useState(null)
   const [cart, setCart] = useState([]) // lines of { item, qty }
   const [view, setView] = useState('menu') // 'menu' | 'cart' | 'done'
   const [lastOrder, setLastOrder] = useState(null)
-  const [favourites, setFavourites] = useState([])
-  const [showFavouritesOnly, setShowFavouritesOnly] = useState(false)
-
-  useEffect(() => {
-    const controller = new AbortController()
-    setLoading(true)
-    setError(null)
-
-    fetch('/api/vendors.json', { signal: controller.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        return res.json()
-      })
-      .then((data) => {
-        setVendors(data)
-        setSelectedVendorId(data[0].id)
-      })
-      .catch((err) => {
-        if (err.name !== 'AbortError') setError(err.message)
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setLoading(false)
-      })
-
-    return () => controller.abort()
-  }, [reloadKey])
 
   function handleAddToCart(item) {
     setCart((prev) => {
@@ -51,15 +23,6 @@ function App() {
         )
       }
       return [...prev, { item, qty: 1 }]
-    })
-  }
-
-  function handleToggleFavourite(itemId) {
-    setFavourites((prev) => {
-    if (prev.includes(itemId)) {
-      return prev.filter((id) => id !== itemId)
-    }
-      return [...prev, itemId]
     })
   }
 
@@ -77,25 +40,16 @@ function App() {
     setCart((prev) => prev.filter((line) => line.item.id !== itemId))
   }
 
-function handlePlaceOrder(details) {
-  const total = cart.reduce(
-    (sum, line) => sum + line.item.price * line.qty,
-    0
-  )
-
-  setLastOrder({ ...details, total })
-  setCart([])
-  setView('done')
-}
+  function handlePlaceOrder(details) {
+    const total = cart.reduce((sum, line) => sum + line.item.price * line.qty, 0)
+    setLastOrder({ ...details, total })
+    setCart([])
+    setView('done')
+  }
 
   const cartCount = cart.reduce((sum, line) => sum + line.qty, 0)
-  const selectedVendor = vendors.find((v) => v.id === selectedVendorId)
-  // B6: Display all items or favourite items only
-  const visibleMenuItems = selectedVendor
-  ? selectedVendor.menu.filter((item) =>
-      !showFavouritesOnly || favourites.includes(item.id)
-    )
-  : []
+  // Fall back to the first vendor until the user picks one
+  const selectedVendor = vendors.find((v) => v.id === selectedVendorId) ?? vendors[0]
 
   let content
   if (view === 'cart') {
@@ -108,23 +62,18 @@ function handlePlaceOrder(details) {
       />
     )
   } else if (view === 'done') {
-  content = (
-    <div className="card">
-      <h2>Order placed successfully!</h2>
-
-      <p>Name: {lastOrder.name}</p>
-
-      <p>Mahallah: {lastOrder.mahallah}</p>
-
-      <p>Pickup Time: {lastOrder.pickupTime}</p>
-
-      <p>Total: RM {lastOrder.total.toFixed(2)}</p>
-    </div>
-  )
+    content = lastOrder && (
+      <div className="card">
+        <h2>Order placed</h2>
+        <p>Thank you, {lastOrder.name}!</p>
+        <p>Pickup at {lastOrder.pickupTime} (Mahallah {lastOrder.mahallah})</p>
+        <p className="cart-total">Total: RM {lastOrder.total.toFixed(2)}</p>
+      </div>
+    )
   } else if (loading) {
     content = <Loading />
   } else if (error) {
-    content = <ErrorMessage message={error} onRetry={() => setReloadKey((k) => k + 1)} />
+    content = <ErrorMessage message={error} onRetry={reload} />
   } else {
     content = (
       <>
@@ -135,7 +84,7 @@ function handlePlaceOrder(details) {
               <VendorCard
                 key={vendor.id}
                 vendor={vendor}
-                isSelected={vendor.id === selectedVendorId}
+                isSelected={selectedVendor && vendor.id === selectedVendor.id}
                 onSelect={setSelectedVendorId}
               />
             ))}
@@ -144,23 +93,7 @@ function handlePlaceOrder(details) {
         {selectedVendor && (
           <section>
             <h2 className="section-title">Menu: {selectedVendor.name}</h2>
-
-            {/* B6: Favourites Only toggle */}
-            <label>
-              <input
-                type="checkbox"
-                checked={showFavouritesOnly}
-                onChange={(e) => setShowFavouritesOnly(e.target.checked)}
-              />
-              Favourites Only
-            </label>
-
-            <MenuList
-              items={visibleMenuItems}
-              onAdd={handleAddToCart}
-              favourites={favourites}
-              onToggleFavourite={handleToggleFavourite}
-            />
+            <MenuList items={selectedVendor.menu} onAdd={handleAddToCart} />
           </section>
         )}
       </>
