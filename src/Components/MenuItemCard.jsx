@@ -1,10 +1,9 @@
+import { useCart } from '../hooks/useCart.js'
 
-function MenuItemCard({
-  item,
-  onAdd,
-  isFavourite,
-  onToggleFavourite
-}) {
+function MenuItemCard({ item }) {
+  const { addToCart, favourites, toggleFavourite } = useCart()
+  const isFavourite = favourites.includes(item.id)
+
   return (
     <article className="card menu-card">
       <div className="thumb" aria-hidden="true">
@@ -17,17 +16,14 @@ function MenuItemCard({
       <p className="price">RM {item.price.toFixed(2)}</p>
 
       {/* B6: Favourite button */}
-      <button
-        className="btn"
-        onClick={() => onToggleFavourite(item.id)}
-      >
+      <button className="btn" onClick={() => toggleFavourite(item.id)}>
         {isFavourite ? '♥ Favourited' : '♡ Favourite'}
       </button>
 
       <button
         className="btn"
         disabled={!item.available}
-        onClick={() => onAdd(item)}
+        onClick={() => addToCart(item)}
       >
         {item.available ? 'Add to cart' : 'Sold out'}
       </button>

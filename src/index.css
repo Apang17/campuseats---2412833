@@ -180,3 +180,14 @@ a.card:hover { border-color: var(--green-light); }
 .menu-card .muted {
   flex-grow: 1;
 }
+
+a.vendor-card { text-decoration: none; color: inherit; }
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.nav {
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+}
